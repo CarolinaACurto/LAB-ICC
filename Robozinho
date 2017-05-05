@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+
+int main(){
+
+int s1,s2,m1,m2;
+int pm1,pm2;
+int d1,d2;
+
+//Sensors
+  scanf ("%d%d", d1,d2); //scaneia a distancia
+
+    if (d1<=40 && d1>0){
+      s1=1; }         //se a distancia1 for menor que 40cm, o sensor 1 identifica o obstaculo
+        else {
+        s1=0;
+        }
+
+
+    if (d2<=40 && d2>0){
+      s2=1; }         // se a distancia2 for menor que 40cm, o sensor 2 identifica o obstaculo
+        else {
+        s2=0;
+        }
+
+
+//AI            // 0 significa que o robo continua funcionando, e 1 para parar
+    if (s1==0 && s2==0) {
+        m1=0;
+        m2=0;
+    }
+    else if (s1==1 && s2==0) {
+        m1=0;
+        m2=1;
+    }
+    else if (s1==0 && s2==1){
+        m1=1;
+        m2=0;
+    }
+    else if (s1==1 && s2==1){
+        m1=1;
+        m2=0;
+    }
+
+
+//Drive motors
+
+if (m1==1){
+    pwmwrite(pm1,255); }
+        else{
+        pwmwrite(pm1,0);
+    }
+
+if (m2==1){
+    pwmwrite(pm2,255); }
+        else{
+        pwmwrite(pm2,0);
+    }
+
+
+printf("\n%d %d\n", m1, m2);
+
+
+return 0;
+}
+
+

@@ -5,13 +5,12 @@
 
 void Sensors() {   //ReadSensors
 
-int s1, s2;
 int d1, d2;
 
   scanf ("%d %d", &d1, &d2); //scaneia a distancia
 
     if (d1<=40 && d1>0){
-      s1=1; 
+      s1=1;
     }         //se a distancia1 for menor que 40cm, o sensor 1 identifica o obstaculo
     else {
       s1=0;
@@ -19,7 +18,7 @@ int d1, d2;
 
 
     if (d2<=40 && d2>0){
-      s2=1; 
+      s2=1;
     }         // se a distancia2 for menor que 40cm, o sensor 2 identifica o obstaculo
     else {
         s2=0;
@@ -29,7 +28,6 @@ int d1, d2;
 void AI() {     //AI            // 0 significa que o robo continua funcionando, e 1 para parar
 
 int s1,s2;
-int m1,m2;
 
     if (s1==0 && s2==0) {
         m1=0;
@@ -52,7 +50,6 @@ int m1,m2;
 void DriveMotors(){       //Drive motors
 
 int m1,m2;
-int pm1,pm2;
 
 if (m1==0){
     pwmwrite(pm1,100);
@@ -68,16 +65,9 @@ else{
 
 int main() {
 
-int s1, s2;
-int d1, d2;
-int m1,m2;
-int pm1,pm2;
-
 Sensors();
 AI();
 DriveMotors();
 
 return 0;
 }
-
-

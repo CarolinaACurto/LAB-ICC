@@ -1,0 +1,32 @@
+#include <stdio.h>
+int s1, s2, s3, m1, m2;
+int vi[8]={1,1,0,1,0,0,0,0};
+int vii[8]={1,0,1,0,1,1,1,1};
+void LeSensor(void){
+    int dist1, dist2, dist3;
+    scanf("%d %d %d", &dist1,&dist2,&dist3);
+    s1=0;s2=0;s3=0;
+    if (dist1<50){
+        s1 = 1;}
+    if (dist2<50){
+        s2 = 1;}
+    if (dist3<50){
+        s3 = 1;}
+    return;}
+
+void IA(void){
+    m1 = vi[s1 + 2*s2 + 4*s3];
+    m2 = vii[s1 + 2*s2 + 4*s3];
+        return;}
+
+void DriveMotors(void){
+    printf("%d %d\n", m1,m2);
+    return;}
+
+int main(){
+    while (1){
+        LeSensor();
+        IA();
+        DriveMotors();}
+    return 0;
+}

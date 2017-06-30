@@ -1,0 +1,210 @@
+BATALHA NAVAL EM C
+Regras: 
+Há um tabuleiro de 5x5, ou seja, 25 blocos. Há 3 navios escondidos (um em cada bloco). O objetivo do jogar é descobrir onde estão estes navios e acertá-los.
+A cada tiro dado é dito se você acertou algum navio. Caso tenha errado, é dito quantos navios existem naquela linha e naquela coluna.
+O jogo só acaba quando você descobrir e afundar os 3 navios.
+
+Legenda para o usuário:
+~: água no bloco. Ainda não foi dado tiro.
+*: tiro dado, não há nada ali.
+X: tiro dado, havia um navio ali.
+
+Como jogar:
+A cada rodada, digite dois números: o número da linha e o número da coluna onde quer dar o tiro. Depois é só esperar para ver se acertou, ou receber a dica.
+
+Programa em C:
+O tabuleiro 5x5 é de inteiros. Ele é inicializado com valores '-1'.
+A cada tiro ele é atualizado, dependendo se o usuário acertou ou errou. Esses números servirão para exibir '~', '*' ou 'X' para o usuário e para exibir as dicas.
+
+Legenda do tabuleiro:
+-1 : nenhum tiro foi dado naquele bloco (~)
+ 0 : o tiro foi dado e não havia nada (*)
+ 1 : o usuário atirou e tinha um navio lá (X)
+
+
+Funções:
+•void inicializaTabuleiro() - inicialmente coloca o valor -1 em todas as partes do tabuleiro
+•void mostraTabuleiro() - recebe o tabuleiro de inteiros e os exibe
+•void iniciaNavios() - essa função sorteia 3 pares de inteiros, que são a localização dos 3 navios
+•void darTiro() - recebe um tiro (linha e coluna) do usuário, e armazena na variável tiro[]
+•boolean acertou() - checa se o tiro dado acertou um navio
+•void dica() - dá a dica de quantos navios existem naquela linha e naquela coluna onde o tiro foi dado
+•void alteraTabuleiro() - após o tiro ser dado, o tabuleiro é alterado, mostrando o tiro que foi dado(se acertou ou errou)
+
+
+
+
+
+
+	
+
+Lógica do problema
+
+Inicialmente, são criadas a variável 'tabuleiro[5][5]', que vai armazenar o tabuleiro do jogo, a variável 'navios[3][2]', que vai armazenar a posição (linha e coluna) dos 3 navios que estão escondidos no tabuleiro, a variável 'tiro[2]' que vai armazenar a posição (linha e coluna) do tiro que o jogador vai dar a cada rodada, além da variável 'tentativa', que vai armazenar o número de tentativas que o jogador fez até acertar os 3 navios e, por fim, a variável 'acertos' que contabiliza o número de navios que você acertou.
+
+A função 'inicializaTabuleiro()' é acionado, pra criar o tabuleiro com o número '-1' em todas as posições.
+
+Depois é a função 'iniciaNavios()', que vai sortear a posição de 3 navios (linha e coluna). Essa função sorteia dois números, entre 0 e 4. Depois ela checa se esse número já saiu, pois não podem existir dois barcos na mesma posição.
+Caso já tenha saído, entra no do...while que fica sorteando números, e só sai quando sorteia outro par de números que não é a localização de um navio.
+
+Após isso, na main(), vamos inicia-se o jogo. Os jogos geralmente se iniciam através de um laço do...while. No caso, a condição do while é 'acertos!=3'. Ou seja, enquanto você não acertar os 3 navios, o jogo não para.
+
+A primeira coisa que ocorre é mostrar o tabuleiro, através do 'mostraTabuleiro()'.
+Essa função checa cada posição do 'tabuleiro'. Se for -1 ele exibe água, '~'. Se for 0, ele exibe o tiro que foi dado e errou '*', e se for 1, ele exibe 'X' que indica que você acertou um navio naquela posição.
+
+Após mostrar o tabuleiro, você vai dar seu tiro, através da função 'darTiro()', que recebe dois inteiros. (Note que, o usuário vai digitar números de 1 até 5, pois ele conta de 1 até 5. No código vai de 0 a 4). Portanto, quando o usuário entrar com a linha e com a coluna, é subtraído 1 de cada valor desses. Ou seja, se usuário entrou com (1,1), no seu tabuleiro C 5x5 isso representa a posição (0,0).
+
+Após o tiro ser dado, o jogo em C vai checar se esse tiro acertou algum navio. Isso é feito com a função 'acertou()', que retorna 'true' caso acerte e 'false' caso erre.
+Na função, ele simplesmente checa se esse par de valores - 'tiro[2]' - que definem o tiro do usuario, batem com algum dos valores que definem a posição dos navios - navios[3][2]. Caso acerte, o valor de 'acertos' aumenta. Acertando ou errando, 'tentativas' aumenta, pois, uma tentativa foi feita.
+
+Acertando ou errando, uma dica também é exibida. Essa dica é exibida através da função 'dica()', que vai olhar o tiro do jogador 'tiro[2]', e olha se na linha e na coluna que ele tentou existe mais algum navio, na 'navios[3][2]'.
+Note que, a linha o tiro é feito no 'tiro[0]' e a coluna é 'tiro[1]'.
+A linha de cada navio é 'navios[x][0]' e a coluna de cada navio é 'navios[x][1]', onde 'x' é o número dos navios. Nesse caso, são 3 navios, ou seja, vai de 0 até 2.
+
+Acertando ou errando, o tabuleiro vai ser alterado. O tiro que o jogador deu vai alterar o local do tabuleiro, e vai aparecer tiro dado '*' ou tiro que acertou 'X'.
+Isso é feito através da função 'alteraTabuleiro()', usando uma função dentro da outra. Depois é checado se o tiro dado 'tiro[2]' acertou através da função 'acertou'.
+Caso acerte, a posição do tabuleiro referente ao tiro do usuário vai mudar de '-1' para '1'. Caso erre, a posição do tabuleiro referente ao tiro vai mudar de '-1' para '0'. Assim, quando o tabuleiro for exibido, já vai exibir com '*' ou 'X' no lugar desse antigo '~'.
+
+
+Código: 
+#include <stdio.h>
+#include <stdlib.h>
+
+void inicializaTabuleiro(int tabuleiro[][5]){
+    int linha, coluna;
+        for(linha=0 ; linha < 5 ; linha++ )
+            for(coluna=0 ; coluna < 5 ; coluna++ )
+                tabuleiro[linha][coluna]=-1;
+}
+
+void mostraTabuleiro(int tabuleiro[][5]){
+
+    int linha, coluna;
+
+        printf("\t1 \t2 \t3 \t4 \t5");
+        printf("\n");
+
+        for(linha=0 ; linha < 5 ; linha++ ){
+            printf("%d",linha+1);
+            for(coluna=0 ; coluna < 5 ; coluna++ ){
+                if(tabuleiro[linha][coluna]==-1){
+                    printf("\t~");
+                }else if(tabuleiro[linha][coluna]==0){
+                    printf("\t*");
+                }else if(tabuleiro[linha][coluna]==1){
+                    printf("\tX");
+                }
+
+            }
+            printf("\n");
+        }
+
+    }
+
+
+void iniciaNavios(int navios[][2]){
+        srand(time(NULL));
+        int navio, anterior;
+
+        for(navio=0 ; navio < 3 ; navio++){
+            navios[navio][0]= rand()%5;
+            navios[navio][1]= rand()%5;
+
+            //agora vamos checar se esse par não foi sorteado
+            //se foi, so sai do do...while enquanto sortear um diferente
+            for(anterior=0 ; anterior < navio ; anterior++){
+                if( (navios[navio][0] == navios[anterior][0])&&(navios[navio][1] == navios[anterior][1]) )
+                    do{
+                        navios[navio][0]= rand()%5;
+                        navios[navio][1]= rand()%5;
+                    }while( (navios[navio][0] == navios[anterior][0])&&(navios[navio][1] == navios[anterior][1]) );
+            }
+        }
+    }
+
+void darTiro(int tiro[2]){
+
+        printf("Linha: ");
+        scanf("%d",&tiro[0]);
+        tiro[0]--;
+
+        printf("Coluna: ");
+        scanf("%d",&tiro[1]);
+        tiro[1]--;
+
+}
+
+int acertou(int tiro[2], int navios[][2]){
+    int navio;
+
+        for(navio=0 ; navio < 3 ; navio++){
+            if( tiro[0]==navios[navio][0] && tiro[1]==navios[navio][1]){
+                printf("Você acertou o tiro (%d,%d)\n",tiro[0]+1,tiro[1]+1);
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+
+
+void dica(int tiro[2], int navios[][2], int tentativa){
+        int linha=0,
+            coluna=0,
+            fila;
+
+        //conta quantos navios há na linha tiro[0]
+        for(fila=0 ; fila < 3 ; fila++){
+            if(navios[fila][0]==tiro[0])
+                linha++;
+            if(navios[fila][1]==tiro[1])
+                coluna++;
+        }
+
+        printf("\nDica %d: \nlinha %d -> %d navios\ncoluna %d -> %d navios\n",tentativa,tiro[0]+1,linha,tiro[1]+1,coluna);
+}
+
+void alteraTabuleiro(int tiro[2], int navios[][2], int tabuleiro[][5]){
+        if(acertou(tiro,navios))
+            tabuleiro[tiro[0]][tiro[1]]=1;
+        else
+            tabuleiro[tiro[0]][tiro[1]]=0;
+    }
+
+
+
+
+int main() {
+        int tabuleiro[5][5];
+        int navios[3][2];
+        int tiro[2];
+        int tentativas=0,
+            acertos=0;
+
+        inicializaTabuleiro(tabuleiro);
+        iniciaNavios(navios);
+
+        printf("\n");
+
+        do{
+            mostraTabuleiro(tabuleiro);
+            darTiro(tiro);
+            tentativas++;
+
+            if(acertou(tiro,navios)){
+                dica(tiro,navios,tentativas);
+                acertos++;
+            }
+            else
+                dica(tiro,navios,tentativas);
+
+            alteraTabuleiro(tiro,navios,tabuleiro);
+
+
+        }while(acertos!=3);
+
+        printf("\n\n\nJogo terminado. Você acertou os 3 navios em %d tentativas", tentativas);
+        mostraTabuleiro(tabuleiro);
+    }
+
+

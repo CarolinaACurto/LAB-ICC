@@ -1,0 +1,210 @@
+﻿DESPOLUINDO O OCEANO EM C
+ 
+Regras: 
+Há um tabuleiro de 5x5, ou seja, 25 blocos. Há 3 lixos escondidos (um em cada bloco). O objetivo do jogo é descobrir onde estão estes lixos e pesca-los para retira-los do oceano.
+A cada vez que é “pescado”  uma mensagem indica se você encontrou algum lixo. Caso tenha errado, é dito quantos lixos existem naquela linha e naquela coluna.
+O jogo só acaba quando você descobrir e retirar os 3 lixos.
+
+Legenda para o usuário:
+~: água no bloco. Ainda não foi lançado o anzol..
+*: anzol foi jogado, não há nada ali.
+X: anzol foi jogado, havia um lixo ali.
+
+Como jogar:
+A cada rodada, digite dois números: o número da linha e o número da coluna onde quer pescar. Depois é só esperar para ver se acertou, ou receber a dica.
+
+Programa em C:
+O tabuleiro 5x5 é de inteiros. Ele é inicializado com valores '-1'.
+A cada jogada ele é atualizado, dependendo se o usuário acertou ou errou. Esses números servirão para exibir '~', '*' ou 'X' para o usuário e para exibir as dicas.
+
+Legenda do tabuleiro:
+-1 : nenhuma jogada foi dada naquele bloco (~)
+ 0 : o anzol foi jogado e não havia nada (*)
+ 1 : o usuário pescou um lixo (X)
+
+
+
+Funções:
+•void inicializaTabuleiro() - inicialmente coloca o valor -1 em todas as partes do tabuleiro
+•void mostraTabuleiro() - recebe o tabuleiro de inteiros e os exibe
+•void iniciaLixos() - essa função sorteia 3 pares de inteiros, que são a localização dos 3 lixos
+•void Pescar() - recebe uma jogada(linha e coluna) do usuário, e armazena na variável pesca[]
+•boolean acertou() - checa se a jogada acertou um lixo
+•void dica() - dá a dica de quantos lixos existem naquela linha e naquela coluna onde o anzol foi jogado
+•void alteraTabuleiro() - após o anzol ser jogado, o tabuleiro é alterado, mostrando o onde(se acertou ou errou)
+
+
+
+
+	
+Lógica do problema
+
+Inicialmente, são criadas a variável 'tabuleiro[5][5]', que vai armazenar o tabuleiro do jogo, a variável 'lixos[3][2]', que vai armazenar a posição (linha e coluna) dos 3 lixos que estão escondidos no tabuleiro, a variável 'pesca[2]' que vai armazenar a posição (linha e coluna) da jogada que o jogador vai dar a cada rodada, além da variável 'tentativa', que vai armazenar o número de tentativas que o jogador fez até acertar os 3 lixos e, por fim, a variável 'acertos' que contabiliza o número de lixos que você acertou.
+
+A função 'inicializaTabuleiro()' é acionado, para criar o tabuleiro com o número '-1' em todas as posições.
+
+Depois é a função 'iniciaLixos()', que vai sortear a posição de 3 lixos (linha e coluna). Essa função sorteia dois números, entre 0 e 4. Depois ela checa se esse número já saiu, pois não podem existir dois lixos na mesma posição.
+Caso já tenha saído, entra no do...while que fica sorteando números, e só sai quando sorteia outro par de números que não é a localização de um lixo.
+
+Após isso, na main(), inicia-se o jogo. O jogo é iniciado através de um do...while. No caso, a condição do while é 'acertos!=3'. Ou seja, enquanto você não acertar os 3 lixos, o jogo não para.
+
+A primeira coisa que ocorre é mostrar o tabuleiro, através do 'mostraTabuleiro()'.
+Essa função checa cada posição do 'tabuleiro'. Se for -1 ele exibe água, '~'. Se for 0, ele exibe a jogada que foi dada e errou '*', e se for 1, ele exibe 'X' que indica que acertou um lixo naquela posição.
+
+Após mostrar o tabuleiro, o jogador vai jogar o anzol, através da função 'Pescar()', que recebe dois inteiros. (O jogador vai digitar números de 1 até 5, pois ele conta de 1 até 5. No código vai de 0 a 4). Portanto, quando o usuário entrar com a linha e com a coluna, é subtraído 1 de cada valor desses. Ou seja, se usuário entrou com (1,1), no tabuleiro em  C (5x5) isso representa a posição (0,0).
+
+Após a jogada, o jogo em C vai checar se foi encontrado algum lixo. Isso é feito com a função 'acertou()', que retorna 'true' caso encontre e 'false' caso não.
+Na função, é checado se esse par de valores - 'pesca[2]' - que definem a jogada do usuário, batem com algum dos valores que definem a posição dos lixos - lixos[3][2]. Caso acerte, o valor de 'acertos' aumenta. Acertando ou errando, 'tentativas' aumenta, pois, uma tentativa foi feita.
+
+Acertando ou errando, uma dica também é exibida. Essa dica é exibida através da função 'dica()', que vai olhar a jogada do usuário 'pesca[2]', e olha se na linha e na coluna que ele tentou existe mais algum lixo, na 'lixos[3][2]'. (Note que, a linha é feita na 'pesca[0]' e a coluna é 'pesca[1]').
+A linha de cada lixo é 'lixos[x][0]' e a coluna de cada lixo é 'lixos[x][1]', onde 'x' é o número dos lixos. Nesse caso, são 3 lixos, ou seja, vai de 0 até 2.
+
+Acertando ou errando, o tabuleiro vai ser alterado. Ao lançar um anzol, vai alterar o local do tabuleiro, e vai aparecer jogada feita '*' ou lixo encontrado 'X'.
+Isso é feito através da função 'alteraTabuleiro()', usando uma função dentro da outra. Depois é checado se a jogada feita 'pesca[2]' acertou através da função 'acertou'.
+Caso acerte, a posição do tabuleiro referente ao local da jogada do usuário vai mudar de '-1' para '1'. Caso erre, a posição do tabuleiro vai mudar de '-1' para '0'. Assim, quando o tabuleiro for exibido, já vai exibir com '*' ou 'X' no lugar desse antigo '~'.
+
+
+
+Source Code: 
+#include <stdio.h>
+#include <stdlib.h>
+ 
+void inicializaTabuleiro(int tabuleiro[][5]){
+    int linha, coluna;
+        for(linha=0 ; linha < 5 ; linha++ )
+            for(coluna=0 ; coluna < 5 ; coluna++ )
+                tabuleiro[linha][coluna]=-1;
+}
+ 
+void mostraTabuleiro(int tabuleiro[][5]){
+ 
+    int linha, coluna;
+ 
+        printf("\t1 \t2 \t3 \t4 \t5");
+        printf("\n");
+ 
+        for(linha=0 ; linha < 5 ; linha++ ){
+            printf("%d",linha+1);
+            for(coluna=0 ; coluna < 5 ; coluna++ ){
+                if(tabuleiro[linha][coluna]==-1){
+                    printf("\t~");
+                }else if(tabuleiro[linha][coluna]==0){
+                    printf("\t*");
+                }else if(tabuleiro[linha][coluna]==1){
+                    printf("\tX");
+                }
+ 
+            }
+            printf("\n");
+        }
+ 
+    }
+ 
+
+void iniciaLixos(int lixos[][2]){
+        srand((unsigned) time(NULL));
+        int lixo, anterior;
+ 
+        for(lixo=0 ; lixo < 3 ; lixo++){
+            lixos[lixo][0]= rand()%5;
+            lixos[lixo][1]= rand()%5;
+ 
+            //agora vamos checar se esse par não foi sorteado
+            //se foi, so sai do do...while enquanto sortear um diferente
+            for(anterior=0 ; anterior < lixo ; anterior++){
+                if( (lixos[lixo][0] == lixos[anterior][0])&&(lixos[lixo][1] == lixos[anterior][1]) )
+                    do{
+                        lixos[lixo][0]= rand()%5;
+                        lixos[lixo][1]= rand()%5;
+                    }while( (lixos[lixo][0] == lixos[anterior][0])&&(lixos[lixo][1] == lixos[anterior][1]) );
+            }
+        }
+    }
+
+void Pescar(int pesca[2]){
+ 
+        printf("Linha: ");
+        scanf("%d",&pesca[0]);
+        pesca[0]--;
+ 
+        printf("Coluna: ");
+        scanf("%d",&pesca[1]);
+        pesca[1]--;
+ 
+}
+ 
+int acertou(int pesca[2], int lixos[][2]){
+    int lixo;
+ 
+        for(lixo=0 ; lixo < 3 ; lixo++){
+            if( pesca[0]==lixos[lixo][0] && pesca[1]==lixos[lixo][1]){
+                printf("\nVoce encontrou um lixo em (%d,%d)\n\n",pesca[0]+1,pesca[1]+1);
+                return 1;
+            }
+        }
+        return 0;
+    }
+ 
+ 
+ 
+void dica(int pesca[2], int lixos[][2], int tentativa){
+        int linha=0,
+            coluna=0,
+            fila;
+ 
+        //conta quantos lixos há na linha pesca[0]
+        for(fila=0 ; fila < 3 ; fila++){
+            if(lixos[fila][0]==pesca[0])
+                linha++;
+            if(lixos[fila][1]==pesca[1])
+                coluna++;
+        }
+ 
+        printf("\nDica %d: \nlinha %d -> %d lixos\ncoluna %d -> %d lixos\n",tentativa,pesca[0]+1,linha,pesca[1]+1,coluna);
+}
+ 
+void alteraTabuleiro(int pesca[2], int lixos[][2], int tabuleiro[][5]){
+        if(acertou(pesca,lixos))
+            tabuleiro[pesca[0]][pesca[1]]=1;
+        else
+            tabuleiro[pesca[0]][pesca[1]]=0;
+    }
+ 
+ 
+ 
+ 
+int main() {
+        int tabuleiro[5][5];
+        int lixos[3][2];
+        int pesca[2];
+        int tentativas=0,
+            acertos=0;
+ 
+        inicializaTabuleiro(tabuleiro);
+        iniciaLixos(lixos);
+ 
+        printf("\n");
+ 
+        do{
+            mostraTabuleiro(tabuleiro);
+            Pescar(pesca);
+            tentativas++;
+ 
+            if(acertou(pesca,lixos)){
+                dica(pesca,lixos,tentativas);
+                acertos++;
+            }
+            else
+                dica(pesca,lixos,tentativas);
+ 
+            alteraTabuleiro(pesca,lixos,tabuleiro);
+ 
+ 
+        }while(acertos!=3);
+ 
+        printf("\n\n\nJogo terminado. Voce encontrou 3 lixos no oceano em %d tentativas", tentativas);
+        printf("\n\n\nVoce tornou o oceano um pouco mais limpo, as tartarugas e baleias agradecem!!!\n\n\n");
+        mostraTabuleiro(tabuleiro);
+ 
+        return 0;
+    }
